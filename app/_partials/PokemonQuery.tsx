@@ -1,8 +1,8 @@
 'use client'
 
 import { PokemonListItem } from '@/tools/types'
-import { capitalize } from '@/tools/utils'
 import { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
+import { setPokeName } from '@/tools/helpers'
 import Link from 'next/link'
 
 const MAX_ITEMS_PER_PAGE = 50
@@ -14,7 +14,9 @@ const PokemonQuery: FC<{ list: PokemonListItem[] }> = ({ list }) => {
   const [page, setPage] = useState(1)
   const ulRef = useRef<HTMLUListElement | null>(null)
   const filteredQuery = queriedList
-    .filter((item) => item.name.includes(pokemonName))
+    .filter((item) =>
+      item.name.toLowerCase().includes(pokemonName.toLowerCase())
+    )
     .slice(0, page * MAX_ITEMS_PER_PAGE)
 
   useEffect(() => {
@@ -53,17 +55,17 @@ const PokemonQuery: FC<{ list: PokemonListItem[] }> = ({ list }) => {
   }, [queriedList, filteredQuery])
 
   function onChange(e: ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value
+
     setQueriedList(
       list
-        .filter((item) => item.name.includes(e.target.value))
-        .slice(0, !e.target.value ? MAX_ITEMS_PER_PAGE : void 0)
+        .filter((item) => item.name.toLowerCase().includes(value.toLowerCase()))
+        .slice(0, !value ? MAX_ITEMS_PER_PAGE : void 0)
     )
 
-    setPokemonName(e.target.value)
+    setPokemonName(value)
     setPage(1)
     setIsFetching(false)
-
-    ulRef.current?.scroll({ top: 0 })
   }
 
   return (
@@ -86,10 +88,11 @@ const PokemonQuery: FC<{ list: PokemonListItem[] }> = ({ list }) => {
           {filteredQuery?.map((poke, index) => (
             <li key={index}>
               <Link
+                prefetch={false}
                 href={`/${poke.name}`}
                 className='block px-6 py-4 hover:bg-zinc-100'
               >
-                {capitalize(poke.name)}
+                {setPokeName(poke.name)}
               </Link>
             </li>
           ))}

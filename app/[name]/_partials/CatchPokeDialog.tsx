@@ -74,7 +74,7 @@ const CatchPokeDialog: FC<CatchPokeDialogProps> = ({
   }
 
   return (
-    <div className='fixed bottom-0 left-0 right-0 top-0 flex items-center justify-center'>
+    <div className='fixed bottom-0 left-0 flex h-screen w-screen items-center justify-center'>
       <button
         ref={overlayButtonRef}
         className='absolute bottom-0 left-0 right-0 top-0 bg-black/50 focus-within:shadow-[0_0_0_2px_#93c5fd_inset]'
