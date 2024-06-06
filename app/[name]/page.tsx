@@ -26,6 +26,8 @@ const DynamicPage = async (props: PokemonDetailPageProps) => {
         <header className='mt-8'>
           <figure className='mx-auto mb-3 max-w-[96px] overflow-hidden rounded-3xl bg-zinc-100'>
             {pokemon.sprites.front_default && (
+              // Im not recommending using next image for remote image, but
+              // Im suggesting to use SVG or image storage like AWS/imagekit/etc
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 width={96}

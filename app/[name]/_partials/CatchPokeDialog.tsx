@@ -51,14 +51,17 @@ const CatchPokeDialog: FC<CatchPokeDialogProps> = ({
     )
 
     if (data) {
+      // Heres a thing. Store the data in localStorage. This just for demo purpose,
+      // but in a real world, below was requesting to your API
       localStorage.setItem('x-poke', JSON.stringify(data))
       router.push('/bag')
     }
   }
 
-  // Trap focus for the first time
+  // Trap focus for the first time to the overlay
   useEffect(() => overlayButtonRef.current?.focus(), [])
 
+  // Accessibility matter. TAB on cancel, will focus the overlay
   function focusToOverlay(e: KeyboardEvent<HTMLButtonElement>) {
     if (e.key === 'Tab' && !e.shiftKey) {
       overlayButtonRef.current?.focus()
@@ -66,6 +69,7 @@ const CatchPokeDialog: FC<CatchPokeDialogProps> = ({
     }
   }
 
+  // Accessibility matter. SHIT + TAB on overlay, will focus the cancel
   function focusToCancel(e: KeyboardEvent<HTMLButtonElement>) {
     if (e.key === 'Tab' && e.shiftKey) {
       cancelRef.current?.focus()

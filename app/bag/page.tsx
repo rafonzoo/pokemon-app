@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 'use client'
 
 import { PokeBagItem } from '@/tools/types'
@@ -16,10 +14,15 @@ const BagPage = () => {
   const bag = usePokeBag()
   const router = useRouter()
 
-  // Forces a rerender
+  // This page is fully depending on localStorage which only available in browser.
+  // But hydration can't tolerant with it, especially in turbo. So this component
+  // should return nothing while server hydration, then render after window is available.
   useEffect(() => {
     setHydrated(true)
-    return () => setHydrated(false)
+
+    return () => {
+      setHydrated(false)
+    }
   }, [])
 
   function deletePokemon(name: string) {
@@ -33,7 +36,9 @@ const BagPage = () => {
     }
   }
 
-  // Returns null on first render, so the client and server match
+  // If you remove this line, its okay in production just console error.
+  // But in the dev, you will see beautiful error on the screen due to
+  // client and server mismatch. Work around: Turn this component to fully client component.
   if (!hydrated || !bag) {
     return null
   }
@@ -53,12 +58,17 @@ const BagPage = () => {
             >
               <div className='flex w-full items-center rounded-lg bg-zinc-100'>
                 <figure className='max-w-[96px] overflow-hidden rounded-3xl bg-zinc-100'>
-                  <img
-                    width={96}
-                    height={96}
-                    src={item.imageUrl}
-                    alt='Pokemon avatar'
-                  />
+                  {
+                    // Im not recommending using next image for remote image, but
+                    // Im suggesting to use SVG or image storage like AWS/imagekit/etc
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      width={96}
+                      height={96}
+                      src={item.imageUrl}
+                      alt='Pokemon avatar'
+                    />
+                  }
                 </figure>
                 <div className='flex flex-grow flex-col truncate px-3'>
                   <p className='truncate text-lg font-semibold'>

@@ -1,3 +1,5 @@
+// Helpers (more specific task)
+
 import { capitalizeEach } from '@/tools/utils'
 
 export function setPokeName(str: string) {

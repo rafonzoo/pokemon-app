@@ -28,6 +28,9 @@ const PokemonDetail: FC<Pokemon> = ({ stats, ...pokemon }) => {
         )
       }
 
+      // Since the "moves" segment has very long height,
+      // we check parent scrollHeight with current height.
+      // If has a scroller, then "Show all" button will render
       setCollapsed(scrollHeight !== parentHeight)
     }
   }, [segment])

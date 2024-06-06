@@ -25,10 +25,11 @@ function fetchData(args: PokemonSearchProps) {
 }
 
 async function getData({ items, query }: PokemonSearchProps) {
+  // Here we simulate named base query since the API not provide it.
   await new Promise((resolve) => setTimeout(resolve, 500))
-  const lowerQuery = query.trim().toLowerCase()
 
-  return items.filter((item) => {
+  const lowerQuery = query.trim().toLowerCase()
+  const result = items.filter((item) => {
     const lowerName = item.name.toLowerCase()
 
     return (
@@ -36,6 +37,8 @@ async function getData({ items, query }: PokemonSearchProps) {
       lowerName.indexOf(' ' + lowerQuery) !== -1
     )
   })
+
+  return result
 }
 
 const PokemonSearch: FC<PokemonSearchProps> = ({ items, query }) => {
@@ -43,6 +46,7 @@ const PokemonSearch: FC<PokemonSearchProps> = ({ items, query }) => {
     return null
   }
 
+  // The new "use" API will trigger suspense.
   const list = use(fetchData({ items, query }))
 
   if (!list.length) {
@@ -58,6 +62,8 @@ const PokemonSearch: FC<PokemonSearchProps> = ({ items, query }) => {
       {list?.map((poke, index) => (
         <li key={index}>
           <Link
+            // Do not prefetch the link that shown in this result. Because
+            // we don't need prefetch about > 10 items in a row.
             prefetch={false}
             href={`/${poke.name}`}
             className='block px-5 py-3 hover:bg-zinc-100'

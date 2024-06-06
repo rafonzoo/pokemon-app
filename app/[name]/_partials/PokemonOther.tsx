@@ -16,6 +16,8 @@ const PokemonOther = forwardRef(function PokemonOtherRef(
         <li key={index} className='p-1'>
           <div className='cursor-default rounded-full bg-zinc-100 px-3 py-1 text-sm text-zinc-500 transition-colors hover:bg-blue-100'>
             {
+              // Typescript doesnt know what is currentSegment represent for
+              // even it has exact key and type, it still an error
               // @ts-expect-error
               item[currentSegment].name
             }
