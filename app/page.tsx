@@ -9,8 +9,8 @@ const HomePage = async () => {
   const sortedResult = results.sort((a, b) => a.name.localeCompare(b.name))
 
   return (
-    <main className='mx-auto max-w-[400px] before:table'>
-      <div className='rounded-br-4xl rounded-bl-4xl mx-auto mt-8 w-[87.5%] bg-white'>
+    <main className='mx-auto max-w-[400px] before:table after:table'>
+      <div className='rounded-br-4xl rounded-bl-4xl mx-auto my-8 w-[87.5%] bg-white'>
         <PageTitle>
           Type any <br />
           Pokemon name

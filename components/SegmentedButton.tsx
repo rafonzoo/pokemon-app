@@ -23,7 +23,7 @@ const SegmentedButton = <T extends readonly any[]>({
             className={clsx(
               'block w-full rounded-full p-2 text-sm tracking-wide transition-colors',
               item === value
-                ? 'cursor-not-allowed bg-blue-600 text-white'
+                ? 'cursor-default bg-blue-600 text-white'
                 : 'hover:bg-zinc-200 hover:text-zinc-700'
             )}
           >

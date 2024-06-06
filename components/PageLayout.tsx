@@ -10,7 +10,7 @@ const PageLayout: FC<{ children?: ReactNode }> = ({ children }) => {
 
   return (
     <main>
-      <nav className='flex justify-between px-2 py-3'>
+      <nav className='mx-auto flex max-w-[720px] justify-between px-2 py-3'>
         <button
           aria-label='Back'
           title='Back'

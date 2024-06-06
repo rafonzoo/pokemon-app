@@ -7,12 +7,14 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { usePokeBag } from '@/tools/hook'
 import { setPokeName } from '@/tools/helpers'
+import { useRouter } from 'next/navigation'
 import PageTitle from '@/components/PageTitle'
 
 const BagPage = () => {
   const [hydrated, setHydrated] = useState(false)
   const queryClient = useQueryClient()
   const bag = usePokeBag()
+  const router = useRouter()
 
   // Forces a rerender
   useEffect(() => {
@@ -39,12 +41,15 @@ const BagPage = () => {
   return (
     <div className='flex h-[calc(100vh_-_56px)] min-h-[568px] flex-col'>
       <PageTitle>Poke bag</PageTitle>
-      <div className='mx-auto w-[87.5%] max-w-[572px]'>
+      <div className='mx-auto w-[87.5%] max-w-[720px]'>
+        {!bag.length && (
+          <p className='text-center'>No pokemon in your bag yet.</p>
+        )}
         <ul className='flex flex-wrap'>
           {bag.map((item, index) => (
             <li
               key={index}
-              className='relative w-full overflow-hidden p-1 sm:w-1/2'
+              className='relative w-full overflow-hidden p-1 md:w-1/2'
             >
               <div className='flex w-full items-center rounded-lg bg-zinc-100'>
                 <figure className='max-w-[96px] overflow-hidden rounded-3xl bg-zinc-100'>
@@ -68,10 +73,16 @@ const BagPage = () => {
                 </div>
               </div>
               <button
-                className='absolute right-4 top-3 text-xs tracking-wider text-red-600 underline'
+                aria-label={`Visit ${item.pokeName} page`}
+                title={`Visit ${item.pokeName} page`}
+                onClick={() => router.push(`/${item.pokeName}`)}
+                className='absolute bottom-1 left-1 right-1 top-1 rounded-lg focus-visible:outline focus-visible:outline-[3px] focus-visible:-outline-offset-[3px] focus-visible:outline-blue-300'
+              />
+              <button
+                className='absolute right-0 top-0 z-[1] px-3.5 py-2.5 text-xs tracking-wider text-red-600 underline'
                 onClick={() => deletePokemon(item.name)}
               >
-                Hapus
+                Remove
               </button>
             </li>
           ))}
